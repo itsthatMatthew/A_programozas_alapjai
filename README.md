@@ -4,7 +4,7 @@
 
 ---
 
-**FONTOS: Ez nem hivatalos tárgyi jegyzet.** A hivatalos tárgyhonlapok itt érhetőek el:
+**FONTOS: Ez nem hivatalos tárgyi jegyzet. Az általam készített anyagok nem leváltani szándékozzák a hivatalos jegyzetet, hanem kiegészítésül szolgálni hozzá.** A hivatalos tárgyhonlapok itt érhetőek el:
 
 - Prog1: <https://infoc.eet.bme.hu/>
 - Prog2: <https://infocpp.iit.bme.hu/>
