@@ -4,13 +4,15 @@
 
 ---
 
-## 0. Bevezetés
+## Bevezetés
 
 Mély, részletes anyag és az aktualitások a tárgyholnapon: <https://infoc.eet.bme.hu/> (kötelezően ezzel kell kezdeni!)
 
 Ennek a jegyzetnek a célja röviden és lényegretörően, de érthetően átadni alapkoncepciókat és az elméletet. Ezt teszi sokkal inkább a C programozási nyelvvel kapcsolatban, nem célja hatékony algoritmusokat és feladatmegoldásokat bemutatni.
 
-### Tartalomjegyzék
+A [függellék](#függellék) tartalmaz linkeket olyan további olvasmányokra, amiket itt kifejteni feleslegesen sok lenne.
+
+## Tartalomjegyzék
 
 [1. Változók](#1-változók)
 
@@ -29,65 +31,64 @@ Több egyszerű analógia is létezik változókra, gondolhatunk rájuk úgy, mi
 - vagy oldalakra egy könyben.
 
 A közös mindháromban az, hogy "bennük" valamilyen tényleges adatot lehet tárolni.
-Ez a gondolkodásmód egy absztrakciós réteget képez a számítógép memóriája és az emberi világ között, sokkal könnyebb róluk beszélni, névvel illetni őket, valamint hihetetlenül jól képesek leképezni a tényleges háttérbeli történéseket.
+Ez a gondolkodásmód nekünk egy tökéletes absztrakciós réteg, sokkal könnyebb így róluk beszélni, névvel illetni őket.
 
 ### Típusok
 
-C-ben a változóink erősen típusosak, tehát mindig meg kell mondanunk, hogy milyen adatot is tárolunk bennük. A nyelv által támogatott alapvető típusok a következőek:
+A doboz gondolkodásmód csavarja, hogy C-ben mindig meg kell mondanunk, hogy milyen adatot is tárolunk bennük. Ezt jellemezzük a változó típusával. A nyelv által támogatott alapvető ("beépített") típusok a következőek [[1]](#1-httpsenwikipediaorgwikic_data_types):
 
-- `char`
-- `int`
-- `float`
-- `double`
+- `char` (betűket tud tárolni, pl.: `'a'` vagy `'Z'`, de csak 8 biten)
+- `int` (egész számokat tud tárolni, pl.: `-123` vagy `10198`)
+- `float` (lebegőpontos számokat tud tárolni, pl.: `-1.41` vagy `3.1415`)
+- `double` (hasonló a `float`-hoz, csak nagyobb pontosságot biztosít)
 
 Ez egészen kevésnek tűnik, de bizonyos módosítószavakkal, valamint egyszerűen ezekre az alaptípusokra építve nagyon sok mindent el tudunk érni.
+
+### Deklaráció
 
 Egy változó *deklaráció*jának hívjuk azt a kódsort, amikor őt létrehozzuk, például:
 
 ```c
-    int a; // az "a" nevű változó deklarációja egész számként
+    int a; // Az "a" nevű változó deklarációja egész számként.
+```
+
+Ezt követően az "a" nevű változónkban már képesek vagyunk valami konkrét értéket eltárolni.
+Ezt az egyenlőségjellel tehetjük meg, értékadásnak hívjuk:
+
+```c
+    int a; // Az "a" nevű változó deklarációja.
+    a = 1; // Az 1 érték eltárolása "a"-ban.
 ```
 
 Ha egy változót csak deklarálunk, akkor a felvett értékében nem lehetünk biztosak.
+Ezt azért baj, mert ha így használnánk fel, akkor valami határozatlan értéket olvasnánk ki belőle.
 Egy változót ha csak lehet *inicializáljunk*, azaz létrehozáskor adjunk is neki értéket:
 
 ```c
-    int a = 0; // az "a" nevű változó inicializációja 0-ra
+    int a = 0; // Az "a" nevű változó inicializációja 0-ra.
 ```
 
-Egyébként a változónk bármilyen (határozatlan) értéket tárolhatna.
-
-Nézzünk még pár példát a többi típusra is:
+Létrehozás után is felül tudunk írni egy változót más értékkel:
 
 ```c
-    int i = 0; // A már korábban látott egész számot tárolni képes típus.
+    int a = 0; // Az "a" nevű változó inicializációja 0-ra.
+    a = 1;     // Az "a" nevű változó értékének megváltoztatása 1-re.
+    a = 2;     // Az "a" nevű változó értékének megváltoztatása 2-re.
+```
 
-    unsigned u = 1; // Előjel nélküli számok tárolására alkalmas típus (így 2x annyi,
-                    // de csak pozitív szám tárolható el benne).
-                    // Az "unsigned" módosító valamennyi típus elé kihelyezhető.
+Valamint egy változóba egy másik értékét is eltárolhatjuk:
 
-    long long l = 10; // A legnagyobb méretű egész szám típus. Hasznos lehet, főleg
-                      // ha az előjel nélküliséggel ötvözzük.
+```c
+    int a = 1; // Az "a" nevű változó inicializációja 1-re.
+    int b = 2; // A "b" nevű változó inicializációja 2-re.
 
-    char c = 'a'; // Karakterek tárolására alkalmas típus, 1 byte-nyi helyet foglal
-                  // (egy karakternyi), a karaktereket számértékként tárolva,
-                  // ezek az ASCII táblának megfelelően "lefordíthatóak".
-
-    float f = 1.1f; // Lebegőpontos számokat tárolni képes típus.
-
-    double d = 3.14159; // 2x nagyobb méretű lebegőpontos típus a nagyobb precizitásért.
+    b = a; // "a" értékének eltárolása "b"-ben, így "a" és "b" is 1 értékű lesz.
 ```
 
 Több változót is létrehozhatunk egyszerre, ekkor vesszővel kell a neveket elválasztani:
 
 ```c
     int x = 1, y = 2; // Egy "x" és egy "y" nevű változót hozunk létre 1 és 2 értékekkel.
-```
-
-Amennyiben egy változó értékének a megváltozását nem akarjuk megengedni, a változót konstansként deklarálhatjuk. Ekkor kötelező inicializálni, és a tárolt értéke a későbbiekben sem változtatható meg:
-
-```c
-    const int a = 3; // "a" a program teljes futása során a 3 értéket fogja felvenni.
 ```
 
 ### Konverziók
@@ -102,49 +103,27 @@ Amennyiben egy változóban olyan értéket szeretnék tárolni, ami nem a típu
 
 Ezekre az esetekre a fordító is igyekszik felhívni a figyelmünket, de mi is legyünk körültekintőek.
 A fenti példákat kifejezetten "implicit" típuskonverziónak hívjuk, hiszen szintaktikailag semmi nem jelzi, hogy nekik meg kéne történniük.
-Ha valamiért (és később lesz rá okunk) biztosra szeretnénk menni, hogy egy ilyen típuskonverzió megtörténjen, ezt "explicit" módon is megtehetjük a következő képpen:
-
-```c
-    int i = (int) 13.7;
-```
+Ilyen típuskonverzió elvégezhető "explicit" módon is a következő szintaktikával: `(int) 13.7`
 
 ### Műveletek
 
-Persze mindez a sok inicializálás mind értelmetlen lenne anélkül, ha a változóinkkal műveleteket lehetne végezni. Ilyen műveletek alapcsoportja például az aritmetikai műveletek (összeadás, kivonás, szorzás), melyek mind jelen vannak a C nyelvben.
+Persze mindez a sok inicializálás és értékadás mind értelmetlen lenne anélkül, ha a változóinkkal műveleteket lehetne végezni. Ilyen műveletek alapcsoportja például az aritmetikai műveletek (összeadás, kivonás, szorzás), melyek mind jelen vannak a C nyelvben.
 
-A legegyértelműbb ilyen művelet az értékadás, mely az egyenlőségjellel tehető meg, akár változók között is:
-
-```c
-    int a = 0; // Az "a" változó 0-ra inicializálva.
-
-    int b = a; // A "b" változó "a" értékével, azaz 0-val inicializálva.
-
-    b = 3; // "b" változó értéke felülírva 3-mal
-
-    a = b; // "a" változó értéke felülírva "b" értékével, azaz hárommal.
-```
-
-Természetesen nem csak egyedül értékadást tudunk változókkal végezni, de a már fent említett aritmetikai műveleteket is el tudjuk végezni, akár konkrét értékekkel (*literálokkal*), vagy más változókkal, sőt, ezt értékadáskor is megtehetjük:
+Ilyen műveleteket egyszerűen tudunk végezni, akár konrét értékekkel, akár változókkal. A műveletek kiértékelése szabályosan fog megtörténni, akár zárójeleket is felhasználhatunk:
 
 ```c
     int a = 2, b = 3; // "a" és "b" változók 2 és 3 értékekkel.
 
-    int c = a + b; // "c" változó inicializálása "a" és "b" összegével, azaz 5-tel.
-
-    b = a * c; // "b" értékét felülírjuk "a" és "c" szorzatával, azaz 10-zel.
-
-    const int x = a - c; // "x" értéke "a" és "c" különbségére, azaz -3-ra inicializálva.
-
-    const int y = -b; // "y" értéke "b" ellentetjére, azaz -10-re inicializálva.
+    int c = 5 * a + 6 / (b - 2); // Helyesen "c"-be 11 fog eltárolódni.
 ```
 
-Természetesen ezek a műveletek mind a 4 alaptípusra elvégezhetőek, de maradjunk egyelőre `int`-eknél. Az elefánt a szobában az osztás lesz, mely lebegőpontos számokra tökéletesen azt fogja csinálni, amit várnánk, egész számokra mégis egy érdekes jelenség fog előkerülni:
+Az osztás kicsit problémás művelet, mert míg lebegőpontos számokra úgy fut, ahogyan várnánk, egész számok osztásánál egy érdekes jelenség merül fel:
 
 ```c
-    int a = 11 / 3; // "a" értéke 3-ra fog inicializálódni.
+    22 / 7; // A kifejezés "3" értéket fog adni.
 ```
 
-Ezt a jelenséget "integer osztásnak" hívják, és sokkal rosszab implikációi vannak, mint a fenti példa, mivel jelen esetben nem csak egyszerű levágásról van szó:
+Ennek a jelenségnek fontos következményei vannak:
 
 ```c
     float pi = 22 / 7; // "pi" 3.0-ra fog inicializálódni.
@@ -163,25 +142,16 @@ Ez egy fájó rossz, amivel együtt kell élnünk, de a már korábban megismert
 Egész osztáshoz tartozó nagyon fontos aritmetikai művelet még a moduló számítás. Ha visszamegyünk a korábbi példára, jól látszik, hogy hogyan egészítik ki egymást:
 
 ```c
-    int osztando = 11; // Az osztandót 11-re inicializáljuk.
-    int oszto = 3; // Az osztót pedig 3-ra.
-
-    int megvan = osztando / oszto; // Értéke 3, hiszen 11-ben a három 3-szor van meg.
-    int maradek = osztando % oszto; // Értéke 2, hiszen 11 3-mal osztva 2 maradékot ad.
-
-    int eredeti = megvan * oszto + maradek; // 3 * 3 + 2 = 11
+    22 % 7; // "1" értéket fog adni, ami az osztási maradék.
 ```
 
-Két egész szám osztási maradékát határozza meg, de negatív számoknál óvatosan kell eljárni, mert az eredmény meghatározása gyakran fordítónként és platformonként változik.
+Negatív számoknál óvatosan kell eljárni, mert az eredmény meghatározása nem is definiált.
 
 Hasznos ismeret még, hogy aritmetikai műveletek elvégzése és önértékadása rövidíthető:
 
-
 ```c
-    int a = 0; // Inicializáció.
-
     a = a + 2; // "a" változóhoz kettőt adunk, majd eltároljuk saját magában.
-    a += 2; // A felső sor rövidítése, ugyan azt a hatást érjük el.
+    a += 2;    // A felső sor rövidítése, ugyan azt a hatást érjük el.
 ```
 
 Továbbá ha egy értéket eggyel szeretnénk csökkenteni avgy növelni, erre is létezik rövidítés, kettő kategóriában:
@@ -202,11 +172,27 @@ Továbbá ha egy értéket eggyel szeretnénk csökkenteni avgy növelni, erre i
     int a = 1; // "a" értéke 1-re.
 
     int b = ++a; // Először "a" értékét változtatjuk meg, majd ez az érték íródik "b"-be.
-
+                 // Tehát "a" és "b" is 2 lesz.
     int c = a++; // Először "a" értékét írjuk "c"-be, majd "a" értékét megváltoztatjuk.
+                 // Tehát "c" még 2 lesz, de "a" már 3 a végére.
 ```
 
 Ez hasznos eszköz lehet sok `a += 1;` kifejezések lerövidítésére, de a sorrendiségre mindig nagyon oda kell figyelni!
+
+### Változónevek
+
+> There are only two hard things in Computer Science: cache invalidation and naming things.
+
+Minket igazán csak a második érdekel most, az biztos, hogy nehéz jó változóneveket kitalálni. Pár szabály írja le, hogy milyennek választhatjuk meg őket:
+
+- Betűket, számokat és aláhúzást tartalmazhatnak
+- Számmal nem kezdődhetnek
+- Minden változónévnek egyedinek kell lenni, de a kis- és nagybetűk külön vannak kezelve
+- Kulcsszavak nem lehetnek változónevek
+
+Valamint bár sokan szeretik, érdemes az alulhúzással kezdődő neveket kerülni [[2]](#2-on-leading-underscores-and-names-reserved-by-the-c-and-c-languages).
+
+Mindenkinek érdeke, hogy a változónevek rövidek, de lényegre törőek, mégis beszédesek legyenek. Ez egy kellően nehéz feladat, de a rövidítéseket, random egybetűs változóneveket érdemes kerülni, írjunk kódot mindig úgy, mintha azt utána valaki másnak kellene átolvasnia (gyakran saját magunk is így fogjuk érezni).
 
 ---
 
@@ -273,3 +259,13 @@ Ez hasznos eszköz lehet sok `a += 1;` kifejezések lerövidítésére, de a sor
 ---
 
 ## 17.  Állapotgépek
+
+---
+
+## Függellék
+
+*Minden olyan link vagy további olvasmány, aminek a kifejtése túl sok lenne ide.*
+
+#### [[1]: https://en.wikipedia.org/wiki/C_data_types](https://en.wikipedia.org/wiki/C_data_types)
+
+#### [[2]: On leading underscores and names reserved by the C and C++ languages](https://devblogs.microsoft.com/oldnewthing/20230109-00/?p=107685)
